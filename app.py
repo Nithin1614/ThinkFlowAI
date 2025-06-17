@@ -1,11 +1,12 @@
-<<<<<<< HEAD
 from flask import Flask, request, jsonify, render_template
 import requests
 import datetime
+import os
 
 app = Flask(__name__)
 
-API_KEY = "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"
+# Use environment variable for the API key
+API_KEY = os.environ.get("OPENROUTER_API_KEY")
 MODEL = "mistralai/mistral-7b-instruct"
 
 HEADERS = {
@@ -22,64 +23,31 @@ def home():
 @app.route("/ask", methods=["POST"])
 def ask():
     user_input = request.json.get("question", "")
+
     payload = {
         "model": MODEL,
         "messages": [{"role": "user", "content": user_input}]
     }
 
-    response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions", headers=HEADERS, json=payload)
-    data = response.json()
-    answer = data["choices"][0]["message"]["content"]
+    try:
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions", headers=HEADERS, json=payload)
 
-    with open("search_history.txt", "a", encoding="utf-8") as f:
-        f.write(f"{datetime.datetime.now()}\\nQ: {user_input}\\nA: {answer}\\n\\n")
+        if response.status_code != 200:
+            return jsonify({"response": "Sorry, something went wrong with the AI response."}), 500
 
-    return jsonify({"response": answer})
+        data = response.json()
+        answer = data["choices"][0]["message"]["content"]
 
+        with open("search_history.txt", "a", encoding="utf-8") as f:
+            f.write(
+                f"{datetime.datetime.now()}\nQ: {user_input}\nA: {answer}\n\n")
 
-if __name__ == "__main__":
-    app.run(debug=True)
-=======
-from flask import Flask, request, jsonify, render_template
-import requests
-import datetime
+        return jsonify({"response": answer})
 
-app = Flask(__name__)
-
-API_KEY = "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"
-MODEL = "mistralai/mistral-7b-instruct"
-
-HEADERS = {
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type": "application/json"
-}
-
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-@app.route("/ask", methods=["POST"])
-def ask():
-    user_input = request.json.get("question", "")
-    payload = {
-        "model": MODEL,
-        "messages": [{"role": "user", "content": user_input}]
-    }
-
-    response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions", headers=HEADERS, json=payload)
-    data = response.json()
-    answer = data["choices"][0]["message"]["content"]
-
-    with open("search_history.txt", "a", encoding="utf-8") as f:
-        f.write(f"{datetime.datetime.now()}\\nQ: {user_input}\\nA: {answer}\\n\\n")
-
-    return jsonify({"response": answer})
+    except Exception as e:
+        return jsonify({"response": f"Internal Server Error: {str(e)}"}), 500
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
->>>>>>> 0989d8a74e2b616eddcb8e138b485c50344c1c04
+    app.run()
