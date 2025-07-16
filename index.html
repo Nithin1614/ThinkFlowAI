@@ -5,49 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            padding: 40px;
-        }
-
-        textarea,
-        button {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #responseBox {
-            margin-top: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            min-height: 60px;
-            white-space: pre-wrap;
-        }
-    </style>
 </head>
 
-<body>
-    <h1>Ask the AI</h1>
-    <textarea id="question" rows="3" placeholder="Type your question here..."></textarea>
-    <button onclick="askQuestion()">Ask</button>
-    <div id="responseBox"></div>
+<body style="font-family: Arial, sans-serif; background: #f2f2f2; padding: 40px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+
+    <div style="width: 100%; max-width: 600px; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <h1 style="margin-top: 0; font-size: 28px; color: #333; text-align: center;">Ask the AI</h1>
+
+        <textarea id="question" rows="3" placeholder="Type your question here..." 
+            style="width: 100%; padding: 14px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; resize: vertical; margin-top: 10px;"></textarea>
+
+        <button onclick="askQuestion()" 
+            style="width: 100%; margin-top: 12px; padding: 14px; font-size: 16px; background-color: #007BFF; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
+            Ask
+        </button>
+
+        <div id="responseBox" 
+            style="margin-top: 20px; background: #f9f9f9; padding: 18px; border-radius: 10px; min-height: 60px; border: 1px solid #ddd; color: #333; white-space: pre-wrap;">
+        </div>
+    </div>
 
     <script>
         async function askQuestion() {
@@ -60,7 +36,7 @@
                 return;
             }
 
-            responseBox.innerText = "Thinking... ";
+            responseBox.innerText = "Thinking...";
 
             try {
                 const res = await fetch("/ask", {
@@ -71,12 +47,14 @@
 
                 const data = await res.json();
                 responseBox.innerText = "AI: " + data.response;
-                questionBox.value = "";  // Clear the box after asking
+                questionBox.value = ""; // Clear input after asking
             } catch (err) {
-                responseBox.innerText = "❌ Error: Could not get a response.";
+                responseBox.innerText = "Error: Could not get a response.";
                 console.error(err);
             }
         }
     </script>
+
 </body>
 
+</html>
