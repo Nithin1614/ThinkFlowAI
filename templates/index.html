@@ -1,83 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            padding: 40px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 40px;
+      transition: background-color 0.3s, color 0.3s;
+    }
 
-        textarea,
-        button {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+    .dark-mode {
+      background-color: #1e1e1e;
+      color: #f2f2f2;
+    }
 
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    h1 {
+      text-align: center;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+    #container {
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s, color 0.3s;
+    }
 
-        #responseBox {
-            margin-top: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            min-height: 60px;
-            white-space: pre-wrap;
-        }
-    </style>
+    .dark-mode #container {
+      background: #2e2e2e;
+    }
+
+    textarea,
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #responseBox {
+      margin-top: 20px;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 60px;
+      white-space: pre-wrap;
+      border: 1px solid #ccc;
+    }
+
+    .dark-mode #responseBox {
+      background: #3a3a3a;
+      border-color: #555;
+    }
+
+    #history {
+      margin-top: 30px;
+      padding: 15px;
+      background: #e8e8e8;
+      border-radius: 8px;
+      max-height: 250px;
+      overflow-y: auto;
+      font-size: 14px;
+      border: 1px solid #ccc;
+    }
+
+    .dark-mode #history {
+      background: #444;
+      color: #ccc;
+      border-color: #666;
+    }
+
+    .toggle-btn {
+      float: right;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
-
 <body>
+  <div id="container">
+    <button class="toggle-btn" onclick="toggleMode()">🌗 Toggle Theme</button>
     <h1>Ask the AI</h1>
     <textarea id="question" rows="3" placeholder="Type your question here..."></textarea>
     <button onclick="askQuestion()">Ask</button>
     <div id="responseBox"></div>
 
-    <script>
-        async function askQuestion() {
-            const questionBox = document.getElementById("question");
-            const q = questionBox.value.trim();
-            const responseBox = document.getElementById("responseBox");
+    <h3 style="margin-top: 40px;">Search History</h3>
+    <div id="history">Loading history...</div>
+  </div>
 
-            if (!q) {
-                responseBox.innerText = "Please type a question.";
-                return;
-            }
+  <script>
+    async function askQuestion() {
+      const questionBox = document.getElementById("question");
+      const q = questionBox.value.trim();
+      const responseBox = document.getElementById("responseBox");
 
-            responseBox.innerText = "Thinking... 🤔";
+      if (!q) {
+        responseBox.innerText = "Please type a question.";
+        return;
+      }
 
-            try {
-                const res = await fetch("/ask", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ question: q })
-                });
+      responseBox.innerText = "Generating response...";
 
-                const data = await res.json();
-                responseBox.innerText = "AI: " + data.response;
-                questionBox.value = "";  // Clear the box after asking
-            } catch (err) {
-                responseBox.innerText = "❌ Error: Could not get a response.";
-                console.error(err);
-            }
+      try {
+        const res = await fetch("/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: q })
+        });
+
+        const data = await res.json();
+        responseBox.innerText = "AI: " + data.response;
+        questionBox.value = "";
+        loadHistory();
+      } catch (err) {
+        responseBox.innerText = "Error: Could not get a response.";
+        console.error(err);
+      }
+    }
+
+    async function loadHistory() {
+      try {
+        const res = await fetch("/static/search_history.txt");
+        if (res.ok) {
+          const text = await res.text();
+          document.getElementById("history").innerText = text;
+        } else {
+          document.getElementById("history").innerText = "No history available.";
         }
-    </script>
-</body>
+      } catch (err) {
+        document.getElementById("history").innerText = "Error loading history.";
+      }
+    }
 
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // Load history on page load
+    loadHistory();
+  </script>
+</body>
 </html>
