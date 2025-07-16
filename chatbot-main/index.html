@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 40px;
+        }
+
+        textarea,
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #responseBox {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ask the AI</h1>
+    <textarea id="question" rows="3" placeholder="Type your question here..."></textarea>
+    <button onclick="askQuestion()">Ask</button>
+    <div id="responseBox"></div>
+
+    <script>
+        async function askQuestion() {
+            const questionBox = document.getElementById("question");
+            const q = questionBox.value.trim();
+            const responseBox = document.getElementById("responseBox");
+
+            if (!q) {
+                responseBox.innerText = "Please type a question.";
+                return;
+            }
+
+            responseBox.innerText = "Thinking... 🤔";
+
+            try {
+                const res = await fetch("/ask", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ question: q })
+                });
+
+                const data = await res.json();
+                responseBox.innerText = "AI: " + data.response;
+                questionBox.value = "";  // Clear the box after asking
+            } catch (err) {
+                responseBox.innerText = "❌ Error: Could not get a response.";
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+
+</html>
