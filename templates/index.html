@@ -3,123 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Chatbot</title>
+  <title>THINKCAT</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdfaff;
+      color: #222;
       margin: 0;
-      padding: 40px;
-      transition: background-color 0.3s, color 0.3s;
+      padding: 30px;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     .dark-mode {
-      background-color: #1e1e1e;
-      color: #f2f2f2;
+      background-color: #111;
+      color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      transition: background 0.4s ease;
+    }
+
+    .dark-mode .container {
+      background: #1e1e1e;
     }
 
     h1 {
       text-align: center;
+      margin-bottom: 8px;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
     }
 
-    #container {
-      max-width: 700px;
-      margin: auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      transition: background 0.3s, color 0.3s;
+    .tagline {
+      text-align: center;
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 20px;
     }
 
-    .dark-mode #container {
-      background: #2e2e2e;
+    .dark-mode .tagline {
+      color: #aaa;
     }
 
-    textarea,
+    textarea {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
     button {
       width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      background-color: #007BFF;
+      margin-top: 15px;
+      padding: 14px;
+      background: #9c4dcc;
       color: white;
-      cursor: pointer;
+      font-size: 16px;
       border: none;
-      transition: background 0.3s;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     button:hover {
-      background-color: #0056b3;
+      background: #7b34a6;
     }
 
     #responseBox {
-      margin-top: 20px;
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f9f4ff;
+      border: 1px solid #ccc;
       min-height: 60px;
       white-space: pre-wrap;
-      border: 1px solid #ccc;
+      transition: background 0.4s;
     }
 
     .dark-mode #responseBox {
-      background: #3a3a3a;
-      border-color: #555;
+      background: #2b2b2b;
+      border-color: #444;
     }
 
-    #history {
-      margin-top: 30px;
-      padding: 15px;
-      background: #e8e8e8;
-      border-radius: 8px;
-      max-height: 250px;
-      overflow-y: auto;
-      font-size: 14px;
-      border: 1px solid #ccc;
-    }
-
-    .dark-mode #history {
-      background: #444;
-      color: #ccc;
-      border-color: #666;
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
     }
 
     .toggle-btn {
-      float: right;
-      margin-bottom: 10px;
+      background: transparent;
+      border: 1px solid #999;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: #ddd;
+    }
+
+    .dark-mode .toggle-btn:hover {
+      background-color: #333;
+      color: #fff;
+      border-color: #aaa;
+    }
+
+    marquee {
+      font-style: italic;
+      color: #9c4dcc;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .dark-mode marquee {
+      color: #d4a9ff;
     }
   </style>
 </head>
 <body>
-  <div id="container">
-    <button class="toggle-btn" onclick="toggleMode()">🌗 Toggle Theme</button>
-    <h1>Ask the AI</h1>
-    <textarea id="question" rows="3" placeholder="Type your question here..."></textarea>
-    <button onclick="askQuestion()">Ask</button>
-    <div id="responseBox"></div>
+  <div class="top-bar">
+    <button class="toggle-btn" onclick="toggleMode()" id="themeToggle">Dark</button>
+  </div>
 
-    <h3 style="margin-top: 40px;">Search History</h3>
-    <div id="history">Loading history...</div>
+  <div class="container">
+    <h1>🐱 THINKCAT</h1>
+    <div class="tagline">Curious. Clever. Conversational.</div>
+    
+    <textarea id="question" rows="3" placeholder="Ask me anything..."></textarea>
+    <button onclick="askQuestion()">Ask</button>
+    
+    <marquee behavior="scroll" direction="left" id="loadingText" style="display:none;">
+      🐾 THINKCAT is sniffing out a smart answer...
+    </marquee>
+    
+    <div id="responseBox"></div>
   </div>
 
   <script>
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+      const toggleBtn = document.getElementById("themeToggle");
+      toggleBtn.innerText = document.body.classList.contains("dark-mode") ? "Light" : "Dark";
+    }
+
     async function askQuestion() {
       const questionBox = document.getElementById("question");
       const q = questionBox.value.trim();
       const responseBox = document.getElementById("responseBox");
+      const loadingText = document.getElementById("loadingText");
 
       if (!q) {
         responseBox.innerText = "Please type a question.";
         return;
       }
 
-      responseBox.innerText = "Generating response...";
+      responseBox.innerText = "";
+      loadingText.style.display = "block";
 
       try {
         const res = await fetch("/ask", {
@@ -129,35 +179,16 @@
         });
 
         const data = await res.json();
-        responseBox.innerText = "AI: " + data.response;
+        loadingText.style.display = "none";
+        responseBox.innerText = "💬 " + data.response;
         questionBox.value = "";
-        loadHistory();
       } catch (err) {
-        responseBox.innerText = "Error: Could not get a response.";
+        loadingText.style.display = "none";
+        responseBox.innerText = "⚠️ Error: Could not get a response.";
         console.error(err);
       }
     }
-
-    async function loadHistory() {
-      try {
-        const res = await fetch("/static/search_history.txt");
-        if (res.ok) {
-          const text = await res.text();
-          document.getElementById("history").innerText = text;
-        } else {
-          document.getElementById("history").innerText = "No history available.";
-        }
-      } catch (err) {
-        document.getElementById("history").innerText = "Error loading history.";
-      }
-    }
-
-    function toggleMode() {
-      document.body.classList.toggle("dark-mode");
-    }
-
-    // Load history on page load
-    loadHistory();
   </script>
 </body>
 </html>
+
