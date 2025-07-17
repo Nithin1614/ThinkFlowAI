@@ -100,9 +100,10 @@
     }
 
     .toggle-btn {
-      background: transparent;
+      background: #f0f0f0;
+      color: #222;
       border: 1px solid #999;
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
@@ -110,30 +111,35 @@
     }
 
     .toggle-btn:hover {
-      background-color: #ddd;
+      background-color: #e2e2e2;
+    }
+
+    .dark-mode .toggle-btn {
+      background: #222;
+      color: #f0f0f0;
+      border-color: #aaa;
     }
 
     .dark-mode .toggle-btn:hover {
       background-color: #333;
-      color: #fff;
-      border-color: #aaa;
     }
 
-    marquee {
+    #loadingText {
       font-style: italic;
       color: #9c4dcc;
       margin-top: 10px;
       font-size: 14px;
+      display: none;
     }
 
-    .dark-mode marquee {
+    .dark-mode #loadingText {
       color: #d4a9ff;
     }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <button class="toggle-btn" onclick="toggleMode()" id="themeToggle">Dark</button>
+    <button class="toggle-btn" onclick="toggleMode()" id="themeToggle">Toggle Dark Mode</button>
   </div>
 
   <div class="container">
@@ -143,18 +149,35 @@
     <textarea id="question" rows="3" placeholder="Ask me anything..."></textarea>
     <button onclick="askQuestion()">Ask</button>
     
-    <marquee behavior="scroll" direction="left" id="loadingText" style="display:none;">
-      🐾 THINKCAT is sniffing out a smart answer...
-    </marquee>
+    <div id="loadingText">🐾 THINKCAT is grooming its whiskers for the best answer...</div>
     
     <div id="responseBox"></div>
   </div>
 
   <script>
+    const catFacts = [
+      "Cats sleep for around 13–16 hours a day.",
+      "A group of cats is called a clowder.",
+      "Cats can rotate their ears 180 degrees.",
+      "A cat has five toes on its front paws and four on the back.",
+      "The oldest known pet cat was found in a 9,500-year-old grave.",
+      "Cats can make over 100 different sounds.",
+      "House cats share 95.6% of their genes with tigers.",
+      "Cats’ noses are as unique as human fingerprints."
+    ];
+
     function toggleMode() {
-      document.body.classList.toggle("dark-mode");
+      const body = document.body;
       const toggleBtn = document.getElementById("themeToggle");
-      toggleBtn.innerText = document.body.classList.contains("dark-mode") ? "Light" : "Dark";
+      body.classList.toggle("dark-mode");
+
+      const isDark = body.classList.contains("dark-mode");
+      toggleBtn.innerText = isDark ? "Toggle Light Mode" : "Toggle Dark Mode";
+    }
+
+    function showRandomCatFact() {
+      const fact = catFacts[Math.floor(Math.random() * catFacts.length)];
+      document.getElementById("loadingText").innerText = "🐾 " + fact;
     }
 
     async function askQuestion() {
@@ -170,6 +193,7 @@
 
       responseBox.innerText = "";
       loadingText.style.display = "block";
+      showRandomCatFact();
 
       try {
         const res = await fetch("/ask", {
@@ -191,4 +215,3 @@
   </script>
 </body>
 </html>
-
