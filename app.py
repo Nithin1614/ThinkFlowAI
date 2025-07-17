@@ -1,11 +1,11 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, render_template
 import requests
 import datetime
 import os
 
 app = Flask(__name__)
 
-# Load your OpenRouter API key from environment variable
+# Loading OpenRouter API key from environment variable
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
 MODEL = "mistralai/mistral-7b-instruct"
 
@@ -42,7 +42,7 @@ def ask():
         data = response.json()
         answer = data["choices"][0]["message"]["content"]
 
-        # Save to search history
+        # Optionally saved to a text file
         with open("search_history.txt", "a", encoding="utf-8") as f:
             f.write(f"{datetime.datetime.now()}\nQ: {user_input}\nA: {answer}\n\n")
 
@@ -50,11 +50,6 @@ def ask():
 
     except Exception as e:
         return jsonify({"response": f"Internal Server Error: {str(e)}"}), 500
-
-# Serve static history file
-@app.route("/static/<path:path>")
-def static_proxy(path):
-    return send_from_directory(".", path)
 
 if __name__ == "__main__":
     app.run(debug=True)
