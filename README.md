@@ -1,5 +1,6 @@
 # 💬 AI Chatbot (Powered by Mistral via OpenRouter)
 
+link: https://thinkcat-ai.onrender.com/
 A simple web-based chatbot built using Flask that uses Mistral 7B from OpenRouter for AI responses.
 
 ## 🚀 Features
