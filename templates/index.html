@@ -106,7 +106,7 @@
     }
 
     .subtitle {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       color: rgba(255, 255, 255, 0.8);
       font-weight: 300;
       margin-top: 10px;
@@ -346,7 +346,7 @@
       }
 
       .subtitle {
-        font-size: 1rem;
+        font-size: 0.8rem;
       }
 
       .chat-container {
@@ -374,18 +374,18 @@
     }
   </style>
 </head>
-<body>
+<body class="dark-mode">
   <div class="top-bar">
     <button class="theme-toggle" onclick="toggleMode()" id="themeToggle">
-      <span id="themeIcon">🌙</span>
-      <span id="themeText">Dark</span>
+      <span id="themeIcon">☀️</span>
+      <span id="themeText">Light</span>
     </button>
   </div>
 
   <div class="container">
     <div class="header">
       <div class="logo">🐱<span class="logo-text">THINKCAT</span></div>
-      <div class="subtitle">Your intelligent AI companion for thoughtful conversations</div>
+      <div class="subtitle">AI Assistant</div>
     </div>
     
     <div class="chat-container">
@@ -429,7 +429,7 @@
       "👃 Unique: Cats' noses are as unique as human fingerprints."
     ];
 
-    let isDarkMode = false;
+    let isDarkMode = true; // Changed to true for default dark mode
 
     function toggleMode() {
       const body = document.body;
