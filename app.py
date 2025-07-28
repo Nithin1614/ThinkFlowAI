@@ -8,13 +8,16 @@ import time
 
 app = Flask(__name__)
 
-# Configure logging
+# Configure logging for production
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Loading OpenRouter API key from environment variable
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
 MODEL = "mistralai/mistral-7b-instruct"
+
+# Debug for Render/Gunicorn
+logger.info(f"API Key loaded: {'Yes' if API_KEY else 'No'}")
 
 # Validate API key on startup
 if not API_KEY:
@@ -23,13 +26,13 @@ if not API_KEY:
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
     "Content-Type": "application/json",
-    "HTTP-Referer": "http://localhost:5000",  # Optional: helps with rate limiting
-    "X-Title": "THINKCAT AI Assistant"  # Optional: for API usage tracking
+    "HTTP-Referer": "https://your-app.onrender.com",  # Update with your Render URL
+    "X-Title": "THINKCAT AI Assistant"
 }
 
-# Rate limiting simple implementation
+# Rate limiting
 last_request_time = 0
-MIN_REQUEST_INTERVAL = 1  # seconds between requests
+MIN_REQUEST_INTERVAL = 1
 
 def rate_limit(f):
     @wraps(f)
@@ -50,7 +53,6 @@ def home():
 @rate_limit
 def ask():
     try:
-        # Get user input
         data = request.get_json()
         if not data:
             return jsonify({"error": "No JSON data provided"}), 400
@@ -59,39 +61,36 @@ def ask():
         if not user_input:
             return jsonify({"response": "Please provide a question to get started! 🤔"}), 400
 
-        # Validate API key
         if not API_KEY:
+            logger.error("API key not available")
             return jsonify({"response": "⚠️ API configuration error. Please check server settings."}), 500
 
-        # Enhanced payload with better system prompt
         payload = {
             "model": MODEL,
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are THINKCAT, a helpful and intelligent AI assistant. Provide clear, informative, and engaging responses. Format your answers with proper structure when helpful, but keep them conversational and friendly."
+                    "content": "You are THINKCAT, a helpful and intelligent AI assistant. Provide clear, informative, and engaging responses."
                 },
                 {
                     "role": "user", 
                     "content": user_input
                 }
             ],
-            "max_tokens": 1000,  # Reasonable limit
-            "temperature": 0.7,  # Balanced creativity
+            "max_tokens": 1000,
+            "temperature": 0.7,
             "top_p": 0.9
         }
 
         logger.info(f"Processing question: {user_input[:50]}...")
 
-        # Make API request
         response = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers=HEADERS,
             json=payload,
-            timeout=30  # 30 second timeout
+            timeout=30
         )
 
-        # Handle different response codes
         if response.status_code == 401:
             logger.error("Unauthorized: Check API key")
             return jsonify({"response": "⚠️ Authentication error. Please check API configuration."}), 500
@@ -102,20 +101,18 @@ def ask():
             logger.error(f"API error: {response.status_code} - {response.text}")
             return jsonify({"response": "😿 Sorry, I'm having trouble connecting to my brain right now. Please try again!"}), 500
 
-        # Parse response
         data = response.json()
         
         if not data.get("choices") or not data["choices"]:
             return jsonify({"response": " I received an empty response. Please try rephrasing your question."}), 500
             
         answer = data["choices"][0]["message"]["content"]
-
-        # Clean up the answer
         answer = answer.strip()
+        
         if not answer:
             return jsonify({"response": "🐱 I'm not sure how to respond to that. Could you try asking in a different way?"}), 500
 
-        # Save to history with better formatting
+        # Save to history
         try:
             with open("search_history.txt", "a", encoding="utf-8") as f:
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -129,15 +126,6 @@ def ask():
         logger.info("Response generated successfully")
         return jsonify({"response": answer})
 
-    except requests.exceptions.Timeout:
-        logger.error("Request timeout")
-        return jsonify({"response": "⏰ Request timed out. Please try again!"}), 500
-    except requests.exceptions.ConnectionError:
-        logger.error("Connection error")
-        return jsonify({"response": "🌐 Connection error. Please check your internet connection and try again."}), 500
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Request error: {str(e)}")
-        return jsonify({"response": "🐾 Network error occurred. Please try again!"}), 500
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         return jsonify({"response": "😿 An unexpected error occurred. Please try again!"}), 500
@@ -150,6 +138,6 @@ def not_found(error):
 def internal_error(error):
     return jsonify({"error": "Internal server error"}), 500
 
-if __name__ == "__main__":
-    logger.info("Starting THINKCAT server...")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+# For Gunicorn - don't include the if __name__ == "__main__" block
+# Gunicorn will handle the server startup
+
