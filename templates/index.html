@@ -13,16 +13,16 @@
 
     body {
       font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-      color: #e2e8f0;
+      background: #181A1B;
+      color: #ECEFF1;
       min-height: 100vh;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s;
       overflow-x: hidden;
     }
 
     .light-mode {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #2d3748;
+      background: #F5F7FA;
+      color: #25292E;
     }
 
     .top-bar {
@@ -33,42 +33,30 @@
     }
 
     .theme-toggle {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #e2e8f0;
+      background: rgba(38, 41, 46, 0.8);
+      border: 1px solid #303339;
+      color: #ECEFF1;
       padding: 8px 16px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 12px;
       font-weight: 500;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      transition: all 0.2s;
       user-select: none;
     }
+    .theme-toggle:hover {background: #232629;}
 
-    body.light-mode .theme-toggle {
-      color: #2d3748;
-      border-color: rgba(0,0,0,0.2);
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: none;
+    .light-mode .theme-toggle {
+      color: #232629;
+      background: #fff;
+      border-color: #dadada;
     }
-
-    .theme-toggle:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-1px);
-    }
-
-    body.light-mode .theme-toggle:hover {
-      background: rgba(232, 240, 254, 0.9);
-    }
+    .light-mode .theme-toggle:hover {background: #f0f1f3;}
 
     .container {
-      max-width: 800px;
+      max-width: 700px;
       margin: 0 auto;
-      padding: 80px 20px 40px;
+      padding: 88px 20px 40px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -76,85 +64,68 @@
 
     .header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 38px;
       user-select: none;
     }
 
     .logo {
-      font-size: 3.5rem;
-      font-weight: 800;
-      background: linear-gradient(45deg, #6c63ff, #8a78ff, #7e67ff, #9a83ff);
-      background-size: 300% 300%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientFlow 3s ease-in-out infinite;
-      margin-bottom: 10px;
-      letter-spacing: -1px;
-    }
-
-    @keyframes gradientFlow {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .logo-text {
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       font-weight: 700;
-      color: #e2e8f0;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      margin-left: 10px;
-      display: inline-block;
-      animation: glow 2s ease-in-out infinite alternate;
+      letter-spacing: -1px;
+      color: #E0E3E7;
+      text-shadow:
+        0 2px 12px #131517,
+        0 1px 0 #232629,
+        1px 1px 2px #131517;
+      line-height: 1.1;
     }
-
-    body.light-mode .logo-text {
-      color: #2d3748;
-      text-shadow: none;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2); }
-      to { text-shadow: 0 2px 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4); }
+    .light-mode .logo {
+      color: #232629;
+      text-shadow: 0 2px 6px #dedede;
     }
 
     .subtitle {
-      font-size: 0.9rem;
-      color: rgba(226, 232, 240, 0.7);
-      font-weight: 300;
-      margin-top: 10px;
-      user-select: none;
+      font-size: 1.14rem;
+      margin-top: 8px;
+      font-weight: 400;
+      color: #7B8088;
+      letter-spacing: 0.01em;
     }
+    .light-mode .subtitle {color: #56606a;}
 
-    body.light-mode .subtitle {
-      color: rgba(45, 55, 72, 0.8);
+    .tagline {
+      font-size: 1.03rem;
+      margin-top: 20px;
+      color: #ADB2BE;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-align: center;
+      text-shadow: none;
     }
+    .light-mode .tagline {color: #6d7480;}
 
     .chat-container {
-      background: rgba(45, 55, 72, 0.95);
-      border-radius: 24px;
+      background: #222428;
+      border-radius: 22px;
       padding: 32px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 #181A1B18;
+      border: 1px solid #23262D;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      transition: all 0.4s ease;
+      transition: background 0.3s;
     }
-
-    body.light-mode .chat-container {
-      background: rgba(255, 255, 255, 0.95);
-      border-color: rgba(0, 0, 0, 0.2);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      color: #2d3748;
+    .light-mode .chat-container {
+      background: #fff;
+      border-color: #E7E9EB;
+      color: #232629;
+      box-shadow: 0 8px 32px 0 #a9b3be05;
     }
 
     .input-section {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
-
     .input-wrapper {
-      position: relative;
       display: flex;
       gap: 12px;
       align-items: flex-end;
@@ -162,76 +133,55 @@
 
     #question {
       flex-grow: 1;
-      padding: 16px 20px;
-      font-size: 16px;
-      border: 2px solid rgba(103, 126, 234, 0.2);
-      border-radius: 16px;
-      background: rgba(45, 55, 72, 0.8);
-      color: #e2e8f0;
+      padding: 15px;
+      font-size: 15px;
+      border: 2px solid #2C3141;
+      border-radius: 15px;
+      background: #191B1D;
+      color: #ebedf0;
       resize: none;
       outline: none;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
       font-family: inherit;
-      line-height: 1.5;
-      min-height: 56px;
+      min-height: 50px;
     }
-
-    body.light-mode #question {
-      background: rgba(255, 255, 255, 0.95);
-      color: #2d3748;
-      border-color: rgba(103, 126, 234, 0.4);
-    }
-
     #question:focus {
-      border-color: #667eea;
-      background: rgba(45, 55, 72, 0.95);
-      box-shadow: 0 0 0 3px rgba(103, 126, 234, 0.2);
+      border-color: #6C63FF;
+      background: #181A1B;
     }
-
-    body.light-mode #question:focus {
-      border-color: #4c51bf;
-      background: rgba(255, 255, 255, 1);
-      box-shadow: 0 0 0 3px rgba(103, 126, 234, 0.3);
+    .light-mode #question {
+      background: #F5F6F9;
+      color: #25292E;
+      border-color: #dadada;
+    }
+    .light-mode #question:focus {
+      border-color: #574FD6;
+      background: #fff;
     }
 
     .ask-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      background: #242476;
+      color: #fff;
       border: none;
-      padding: 16px 24px;
-      border-radius: 16px;
+      padding: 15px 22px;
+      border-radius: 14px;
       cursor: pointer;
       font-size: 16px;
       font-weight: 600;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 80px;
-      justify-content: center;
+      transition: background .2s, box-shadow .2s;
+      box-shadow: 0 2px 10px #191B1D15;
+      min-width: 86px;
       user-select: none;
     }
-
-    body.light-mode .ask-btn {
-      background: linear-gradient(135deg,#4c51bf 0%,#667eea 100%);
-      color: #e2e8f0;
-    }
-
-    .ask-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(103, 126, 234, 0.3);
-    }
-
-    .ask-btn:active {
-      transform: translateY(0);
-    }
-
+    .ask-btn:hover {background: #3b3bb9;}
+    .ask-btn:active {background: #232375;}
     .ask-btn:disabled {
-      opacity: 0.6;
+      opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
+      background: #383f50;
     }
+    .light-mode .ask-btn {background: #6C63FF;}
+    .light-mode .ask-btn:hover {background: #574FD6;}
 
     .response-section {
       flex-grow: 1;
@@ -239,68 +189,54 @@
       flex-direction: column;
       overflow: hidden;
     }
-
     #loadingText {
       display: none;
       text-align: center;
-      color: #667eea;
-      font-style: italic;
-      padding: 20px;
-      background: rgba(103, 126, 234, 0.1);
+      color: #6C63FF;
+      padding: 18px;
+      background: #23262d;
       border-radius: 12px;
-      margin-bottom: 16px;
-      animation: pulse 2s infinite;
+      margin-bottom: 13px;
+      font-size: 1.05em;
+      letter-spacing: 0.01em;
       user-select: none;
     }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-
-    body.light-mode #loadingText {
-      color: #9f7aea;
-      background: rgba(159, 122, 234, 0.1);
+    .light-mode #loadingText {
+      color: #574FD6;
+      background: #ebedfc;
     }
 
     #responseBox {
-      background: rgba(26, 32, 44, 0.8);
-      border: 1px solid rgba(74, 85, 104, 0.5);
-      border-radius: 16px;
-      padding: 24px;
-      min-height: 120px;
-      white-space: pre-wrap;
+      background: #191B1D;
+      border: 1px solid #23262D;
+      border-radius: 13px;
+      padding: 22px;
+      min-height: 110px;
       font-size: 15px;
       line-height: 1.7;
-      transition: all 0.4s ease;
+      color: #e4e7f2;
+      transition: all 0.3s;
       flex-grow: 1;
       position: relative;
       overflow-y: auto;
-      color: #e2e8f0;
       user-select: text;
+      box-shadow: 0 0px 4px #00000007;
     }
-
-    body.light-mode #responseBox {
-      background: rgba(248, 250, 252, 0.8);
-      border-color: rgba(203, 213, 224, 0.5);
-      color: #2d3748;
+    .light-mode #responseBox {
+      background: #F8FAFC;
+      color: #232629;
+      border-color: #d0d0da;
     }
 
     .response-content {
-      animation: fadeInUp 0.5s ease-out;
+      animation: fadeInUp 0.5s;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% {opacity: 0; transform: translateY(20px);}
+      100% {opacity: 1; transform: translateY(0);}
     }
 
     .empty-state {
@@ -308,105 +244,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100%;
-      color: #a0aec0;
       text-align: center;
-      user-select: none;
+      height: 100%;
+      color: #646b7d;
     }
-
-    .empty-state-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-
     .empty-state-text {
       font-size: 16px;
       font-weight: 500;
     }
 
-    /* Remove all emojis by replacing empty-state-icon content */
-    .empty-state-icon::before {
-      content: "💬";
-    }
-    /* We'll remove that in JS below */
-
-    /* Mobile Responsiveness */
+    /* Responsive adjustments */
     @media (max-width: 768px) {
-      .container {
-        padding: 60px 16px 20px;
-      }
-
-      .logo {
-        font-size: 2.5rem;
-      }
-
-      .logo-text {
-        font-size: 2rem;
-      }
-
-      .chat-container {
-        padding: 24px 20px;
-        border-radius: 20px;
-      }
-
-      .input-wrapper {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .ask-btn {
-        width: 100%;
-        padding: 16px;
-      }
-
-      .top-bar {
-        top: 16px;
-        right: 16px;
-      }
-
-      .theme-toggle {
-        padding: 6px 10px;
-        font-size: 11px;
-      }
+      .container {padding: 60px 8px 20px;}
+      .header {margin-bottom: 26px;}
+      .logo {font-size: 1.6rem;}
+      .chat-container, #responseBox {padding: 14px;}
     }
-
     @media (max-width: 480px) {
-      .logo {
-        font-size: 2rem;
-      }
-
-      .logo-text {
-        font-size: 1.5rem;
-      }
-
-      .subtitle {
-        font-size: 0.8rem;
-      }
-
-      .chat-container {
-        padding: 20px 16px;
-      }
+      .logo {font-size: 1.11rem;}
+      .header {margin-bottom: 14px;}
+      .tagline {font-size: 0.95em;}
     }
-
-    /* Scrollbar Styling */
-    #responseBox::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    #responseBox::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 3px;
-    }
-
-    #responseBox::-webkit-scrollbar-thumb {
-      background: rgba(103, 126, 234, 0.3);
-      border-radius: 3px;
-    }
-
-    #responseBox::-webkit-scrollbar-thumb:hover {
-      background: rgba(103, 126, 234, 0.5);
-    }
+    #responseBox::-webkit-scrollbar {width: 6px;}
+    #responseBox::-webkit-scrollbar-thumb {background: #262B37; border-radius: 3px;}
   </style>
 </head>
 <body>
@@ -419,10 +279,11 @@
 
   <div class="container">
     <div class="header">
-      <div class="logo">
-        <span class="logo-text">ThinkFlow</span>
+      <div class="logo">ThinkFlow</div>
+      <div class="subtitle">Insightful Assistance, Delivered Instantly</div>
+      <div class="tagline">
+        Your personal AI specialist for answers, inspiration, and smart productivity &mdash; always available, never intrusive.
       </div>
-      <div class="subtitle">AI Assistant</div>
     </div>
 
     <div class="chat-container" role="main" aria-live="polite">
@@ -431,7 +292,7 @@
           <textarea
             id="question"
             rows="2"
-            placeholder="Ask me anything... I'm here to help!"
+            placeholder="Type your question here... (Press Enter to send)"
             onkeydown="handleKeyPress(event)"
             aria-label="Type your question here"
           ></textarea>
@@ -440,29 +301,25 @@
           </button>
         </div>
       </div>
-
       <div class="response-section">
         <div id="loadingText" aria-live="assertive" role="status">ThinkFlow is thinking...</div>
         <div id="responseBox">
           <div class="empty-state">
-            <div class="empty-state-text">Ask me anything to get started!</div>
+            <div class="empty-state-text">Ready when you are! Start by typing a question.</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
   <script>
-    let isDarkMode = true; // default dark mode
+    let isDarkMode = true;
 
     function toggleMode() {
       const body = document.body;
       const themeIcon = document.getElementById("themeIcon");
       const themeText = document.getElementById("themeText");
-
       body.classList.toggle("light-mode");
       isDarkMode = !isDarkMode;
-
       if (isDarkMode) {
         themeIcon.textContent = "☀️";
         themeText.textContent = "Light";
@@ -479,21 +336,16 @@
       }
     }
 
-    // Remove cat facts array and cat-themed loading text — just keep basic loading text.
     function showLoading() {
       const loadingText = document.getElementById("loadingText");
       loadingText.style.display = "block";
       loadingText.textContent = "ThinkFlow is thinking...";
     }
-
     function hideLoading() {
-      const loadingText = document.getElementById("loadingText");
-      loadingText.style.display = "none";
-      loadingText.textContent = "";
+      document.getElementById("loadingText").style.display = "none";
     }
 
     function formatResponse(text) {
-      // Basic markdown-like formatting for readability
       return text
         .replace(/\n\n/g, "</p><p>")
         .replace(/\n/g, "<br>")
@@ -507,31 +359,24 @@
       const responseBox = document.getElementById("responseBox");
       const askBtn = document.getElementById("askBtn");
       const btnText = document.getElementById("btnText");
-
       if (!q) {
-        responseBox.innerHTML = '<div class="response-content">❓ Please type a question to get started!</div>';
+        responseBox.innerHTML = '<div class="response-content">Please type a question to get started.</div>';
         return;
       }
-
-      // Disable button and show loading
       askBtn.disabled = true;
       btnText.textContent = "Thinking...";
-
       responseBox.innerHTML = "";
       showLoading();
-
       try {
         const res = await fetch("/ask", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ question: q }),
         });
-
         const data = await res.json();
         hideLoading();
-
         if (!res.ok) {
-          responseBox.innerHTML = `<div class="response-content">⚠️ Error: ${data.response || data.error || "Something went wrong."}</div>`;
+          responseBox.innerHTML = `<div class="response-content">Error: ${data.response || data.error || "Something went wrong."}</div>`;
         } else {
           const formattedResponse = formatResponse(data.response);
           responseBox.innerHTML = `<div class="response-content">${formattedResponse}</div>`;
@@ -539,7 +384,7 @@
         }
       } catch (err) {
         hideLoading();
-        responseBox.innerHTML = '<div class="response-content">⚠️ Oops! I encountered an error. Please try again.</div>';
+        responseBox.innerHTML = '<div class="response-content">Error: Could not get a response. Please try again.</div>';
         console.error(err);
       } finally {
         askBtn.disabled = false;
@@ -547,8 +392,7 @@
         questionBox.focus();
       }
     }
-
-    // Auto-resize textarea height to its content up to max height
+    // Auto-resize textarea
     const textarea = document.getElementById("question");
     textarea.addEventListener("input", function () {
       this.style.height = "auto";
