@@ -27,7 +27,7 @@ HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
     "Content-Type": "application/json",
     "HTTP-Referer": "https://your-app.onrender.com",  # Update with your Render URL
-    "X-Title": "THINKCAT AI Assistant"
+    "X-Title": "ThinkFlow AI Assistant"
 }
 
 # Rate limiting
@@ -56,21 +56,21 @@ def ask():
         data = request.get_json()
         if not data:
             return jsonify({"error": "No JSON data provided"}), 400
-            
+
         user_input = data.get("question", "").strip()
         if not user_input:
-            return jsonify({"response": "Please provide a question to get started! 🤔"}), 400
+            return jsonify({"response": "Please provide a question to get started."}), 400
 
         if not API_KEY:
             logger.error("API key not available")
-            return jsonify({"response": "⚠️ API configuration error. Please check server settings."}), 500
+            return jsonify({"response": "API configuration error. Please check server settings."}), 500
 
         payload = {
             "model": MODEL,
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are THINKCAT, a helpful and intelligent AI assistant. Provide clear, informative, and engaging responses."
+                    "content": "You are ThinkFlow, a helpful and intelligent AI assistant. Provide clear, informative, and engaging responses."
                 },
                 {
                     "role": "user", 
@@ -93,24 +93,23 @@ def ask():
 
         if response.status_code == 401:
             logger.error("Unauthorized: Check API key")
-            return jsonify({"response": "⚠️ Authentication error. Please check API configuration."}), 500
+            return jsonify({"response": "Authentication error. Please check API configuration."}), 500
         elif response.status_code == 429:
             logger.warning("Rate limited")
-            return jsonify({"response": "🐾 I'm getting lots of questions! Please wait a moment and try again."}), 429
+            return jsonify({"response": "Too many requests. Please wait a moment and try again."}), 429
         elif response.status_code != 200:
             logger.error(f"API error: {response.status_code} - {response.text}")
-            return jsonify({"response": "😿 Sorry, I'm having trouble connecting to my brain right now. Please try again!"}), 500
+            return jsonify({"response": "Sorry, I'm having trouble processing your request right now. Please try again later."}), 500
 
         data = response.json()
-        
+
         if not data.get("choices") or not data["choices"]:
-            return jsonify({"response": " I received an empty response. Please try rephrasing your question."}), 500
-            
-        answer = data["choices"][0]["message"]["content"]
-        answer = answer.strip()
-        
+            return jsonify({"response": "I received an empty response. Please try rephrasing your question."}), 500
+
+        answer = data["choices"][0]["message"]["content"].strip()
+
         if not answer:
-            return jsonify({"response": "🐱 I'm not sure how to respond to that. Could you try asking in a different way?"}), 500
+            return jsonify({"response": "I'm not sure how to respond to that. Could you try asking in a different way?"}), 500
 
         # Save to history
         try:
@@ -128,7 +127,7 @@ def ask():
 
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
-        return jsonify({"response": "😿 An unexpected error occurred. Please try again!"}), 500
+        return jsonify({"response": "An unexpected error occurred. Please try again."}), 500
 
 @app.errorhandler(404)
 def not_found(error):
@@ -140,4 +139,3 @@ def internal_error(error):
 
 # For Gunicorn - don't include the if __name__ == "__main__" block
 # Gunicorn will handle the server startup
-
