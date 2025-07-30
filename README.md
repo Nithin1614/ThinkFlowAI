@@ -1,21 +1,22 @@
-# 💬 AI Chatbot (Powered by Mistral via OpenRouter)
+# ThinkFlow AI
 
-link: https://thinkcat-ai.onrender.com/
+A simple AI chatbot for thoughtful conversations. Type something, and it responds. That's all.
 
-A simple web-based chatbot built using Flask that uses Mistral 7B from OpenRouter for AI responses.
+## Features
 
-## 🚀 Features
+- Clean and distraction-free interface
+- Switch between different AI models
+- Typing animation for responses
+- Mobile responsive design
 
-- Chat with an AI model (Mistral 7B)
-- Modern UI with live interaction
-- Search history stored in `search_history.txt`
-- Deployed via Render for free
+## How to Use
 
-## 🛠️ Tech Stack
+1. Open the website.
+2. Choose a model (or stick with the default).
+3. Start chatting.
 
-- Backend: Python, Flask, Gunicorn
-- Frontend: HTML, JavaScript
-- AI API: OpenRouter (Mistral 7B)
+## Deployment
 
-## 📂 Project Structure
+ThinkFlow AI is hosted online and runs directly in your browser. No login, no setup.
+
 
