@@ -2,42 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ThinkFlow AI Assistant</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f0ff;
-      color: #222;
-      margin: 0;
-      padding: 30px;
-      transition: background-color 0.4s ease, color 0.4s ease;
+    :root {
+      --color-bg-dark: #121212;
+      --color-bg-light: #f0f0ff;
+      --color-container-dark: #1e1e1e;
+      --color-container-light: #ffffff;
+      --color-text-dark: #f0f0f0;
+      --color-text-light: #222222;
+      --color-border-dark: #444444;
+      --color-border-light: #cccccc;
+      --color-primary: #6c63ff;
+      --color-primary-hover: #574fd6;
+      --color-error: #e06c75;
+      --color-info: #61afef;
     }
 
-    .dark-mode {
-      background-color: #121212;
-      color: #f0f0f0;
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 30px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-dark);
+      transition: background-color 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body.light-mode {
+      background-color: var(--color-bg-light);
+      color: var(--color-text-light);
     }
 
     .container {
       max-width: 720px;
-      margin: auto;
-      background: #ffffff;
+      width: 100%;
+      background: var(--color-container-dark);
       border-radius: 12px;
       padding: 30px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-      transition: background 0.4s ease;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      transition: background 0.4s ease, color 0.4s ease;
+      display: flex;
+      flex-direction: column;
     }
 
-    .dark-mode .container {
-      background: #1e1e1e;
+    body.light-mode .container {
+      background: var(--color-container-light);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 2rem;
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 2.2rem;
       letter-spacing: 1px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .intro-text {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      color: var(--color-info);
     }
 
     textarea {
@@ -45,44 +81,107 @@
       padding: 15px;
       font-size: 16px;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--color-border-dark);
+      background-color: transparent;
+      color: inherit;
       resize: none;
+      min-height: 80px;
+      transition: border-color 0.3s ease;
+      font-family: inherit;
+    }
+
+    body.light-mode textarea {
+      border-color: var(--color-border-light);
+      background-color: #fff;
+      color: var(--color-text-light);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 5px var(--color-primary);
+      background-color: transparent;
     }
 
     button {
       width: 100%;
-      margin-top: 15px;
-      padding: 14px;
-      background: #6c63ff;
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--color-primary);
       color: white;
       font-size: 16px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-weight: 600;
       transition: background 0.3s ease;
+      user-select: none;
     }
 
-    button:hover {
-      background: #574fd6;
+    button:hover,
+    button:focus {
+      background: var(--color-primary-hover);
+      outline: none;
     }
 
     #responseBox {
-      margin-top: 25px;
+      margin-top: 30px;
+      border-radius: 12px;
+      background: var(--color-container-dark);
+      border: 1px solid var(--color-border-dark);
       padding: 20px;
-      border-radius: 10px;
-      background: #f4f4ff;
-      border: 1px solid #ccc;
-      min-height: 60px;
+      min-height: 100px;
+      color: var(--color-text-dark);
       white-space: pre-wrap;
-      transition: background 0.4s;
+      box-shadow: inset 0 0 8px rgba(108, 99, 255, 0.2);
+      line-height: 1.5;
+      font-size: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
     }
 
-    .dark-mode #responseBox {
-      background: #2b2b2b;
-      border-color: #444;
+    body.light-mode #responseBox {
+      background: var(--color-container-light);
+      border-color: var(--color-border-light);
+      color: var(--color-text-light);
+      box-shadow: inset 0 0 8px rgba(108, 99, 255, 0.1);
     }
 
+    /* Message styling inside responseBox */
+    .message {
+      padding: 12px 15px;
+      border-radius: 10px;
+      background-color: rgba(108, 99, 255, 0.1);
+      font-size: 1rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .message.user {
+      background-color: rgba(108, 99, 255, 0.3);
+      align-self: flex-end;
+      color: var(--color-bg-dark);
+      font-weight: 600;
+    }
+
+    body.light-mode .message.user {
+      color: var(--color-bg-light);
+      background-color: var(--color-primary);
+    }
+
+    .message.assistant {
+      background-color: rgba(108, 99, 255, 0.2);
+      color: inherit;
+      font-weight: 400;
+      align-self: flex-start;
+    }
+
+    /* Top bar container */
     .top-bar {
+      width: 100%;
+      max-width: 720px;
       display: flex;
       justify-content: flex-end;
       margin-bottom: 20px;
@@ -91,70 +190,110 @@
     .toggle-btn {
       background: transparent;
       border: 1px solid #999;
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
       transition: all 0.3s ease;
+      user-select: none;
+      color: var(--color-text-dark);
     }
 
-    .toggle-btn:hover {
+    .toggle-btn:hover,
+    .toggle-btn:focus {
       background-color: #ddd;
+      outline: none;
     }
 
-    .dark-mode .toggle-btn:hover {
+    body.dark-mode .toggle-btn:hover,
+    body.dark-mode .toggle-btn:focus {
       background-color: #333;
       color: #fff;
       border-color: #aaa;
     }
 
-    marquee {
-      font-style: italic;
-      color: #6c63ff;
-      margin-top: 10px;
-      font-size: 14px;
+    /* Loader spinner - replaces marquee */
+    #loadingSpinner {
+      margin: 20px auto 0;
+      width: 36px;
+      height: 36px;
+      border: 4px solid rgba(108, 99, 255, 0.15);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
     }
 
-    .dark-mode marquee {
-      color: #aab0ff;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 15px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      button, textarea {
+        font-size: 14px;
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
     }
   </style>
 </head>
-<body>
+<body class="dark-mode">
   <div class="top-bar">
-    <button class="toggle-btn" onclick="toggleMode()" id="themeToggle">Dark</button>
+    <button class="toggle-btn" onclick="toggleMode()" id="themeToggle">Light</button>
   </div>
 
-  <div class="container">
-    <h1> Ask the AI</h1>
+  <div class="container" role="main" aria-label="ThinkFlow AI Chatbot Interface">
+    <h1>ThinkFlow AI Assistant</h1>
+    <p class="intro-text">Hello! I’m ThinkFlow, your AI assistant. How can I help you today?</p>
     <textarea id="question" rows="3" placeholder="Type your question here..."></textarea>
-    <button onclick="askQuestion()">Ask</button>
-    <marquee behavior="scroll" direction="left" id="loadingText" style="display:none;">
-       THINKING
-    </marquee>
-    <div id="responseBox"></div>
+    <button id="askBtn" onclick="askQuestion()">Ask</button>
+
+    <div id="loadingSpinner" aria-live="polite" aria-label="Loading" role="status"></div>
+    <div id="responseBox" aria-live="polite" aria-atomic="true"></div>
   </div>
 
   <script>
     function toggleMode() {
-      document.body.classList.toggle("dark-mode");
+      document.body.classList.toggle("light-mode");
       const toggleBtn = document.getElementById("themeToggle");
-      toggleBtn.innerText = document.body.classList.contains("dark-mode") ? "Light" : "Dark";
+      if (document.body.classList.contains("light-mode")) {
+        toggleBtn.innerText = "Dark";
+      } else {
+        toggleBtn.innerText = "Light";
+      }
     }
 
     async function askQuestion() {
       const questionBox = document.getElementById("question");
       const q = questionBox.value.trim();
       const responseBox = document.getElementById("responseBox");
-      const loadingText = document.getElementById("loadingText");
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      const askBtn = document.getElementById("askBtn");
 
       if (!q) {
-        responseBox.innerText = "Please type a question.";
+        responseBox.innerHTML = `<div class="message user">Please type a question.</div>`;
         return;
       }
 
-      responseBox.innerText = "";
-      loadingText.style.display = "block";
+      // Disable input while loading
+      askBtn.disabled = true;
+      questionBox.disabled = true;
+
+      // Clear previous responses & show loader
+      responseBox.innerHTML = "";
+      loadingSpinner.style.display = "block";
 
       try {
         const res = await fetch("/ask", {
@@ -164,13 +303,34 @@
         });
 
         const data = await res.json();
-        loadingText.style.display = "none";
-        responseBox.innerText = "💬 " + data.response;
-        questionBox.value = "";
+        loadingSpinner.style.display = "none";
+
+        if (!res.ok) {
+          // Show error message
+          responseBox.innerHTML = `<div class="message user">Error: ${data.response || data.error || "Something went wrong."}</div>`;
+        } else {
+          // Show question and answer nicely
+          const userMsg = document.createElement("div");
+          userMsg.className = "message user";
+          userMsg.textContent = q;
+
+          const assistantMsg = document.createElement("div");
+          assistantMsg.className = "message assistant";
+          assistantMsg.textContent = data.response;
+
+          responseBox.appendChild(userMsg);
+          responseBox.appendChild(assistantMsg);
+
+          questionBox.value = "";
+        }
       } catch (err) {
-        loadingText.style.display = "none";
-        responseBox.innerText = "⚠️ Error: Could not get a response.";
+        loadingSpinner.style.display = "none";
+        responseBox.innerHTML = `<div class="message user">Error: Could not get a response. Please try again later.</div>`;
         console.error(err);
+      } finally {
+        askBtn.disabled = false;
+        questionBox.disabled = false;
+        questionBox.focus();
       }
     }
   </script>
