@@ -519,6 +519,25 @@
 
     /* Mobile-specific styles */
     @media (max-width: 768px) {
+      .top-bar {
+        top: 15px;
+        right: 15px;
+      }
+      
+      .theme-toggle {
+        padding: 10px 16px;
+        font-size: 13px;
+        border-radius: 20px;
+        z-index: 1001;
+      }
+      
+      /* When in mobile compact mode, move theme toggle even further */
+      .mobile-compact .top-bar {
+        top: 25px;
+        right: 25px;
+        z-index: 1002;
+      }
+      
       .container {
         padding: 20px 15px 20px;
         max-width: 100%;
@@ -686,6 +705,23 @@
     }
 
     @media (max-width: 480px) {
+      .top-bar {
+        top: 12px;
+        right: 12px;
+      }
+      
+      .theme-toggle {
+        padding: 8px 14px;
+        font-size: 12px;
+        border-radius: 18px;
+      }
+      
+      /* When in mobile compact mode, position theme toggle to avoid overlap */
+      .mobile-compact .top-bar {
+        top: 20px;
+        right: 20px;
+      }
+      
       .container {
         padding: 15px 12px 15px;
       }
