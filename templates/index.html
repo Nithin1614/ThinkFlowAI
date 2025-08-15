@@ -101,6 +101,7 @@
       text-align: center;
       margin-bottom: 50px;
       user-select: none;
+      transition: all 0.4s ease;
     }
 
     .logo {
@@ -516,100 +517,259 @@
       background: #4f46e5;
     }
 
-    /* Responsive adjustments */
+    /* Mobile-specific styles */
     @media (max-width: 768px) {
       .container {
-        padding: 80px 25px 40px;
+        padding: 20px 15px 20px;
         max-width: 100%;
+        transition: all 0.4s ease;
       }
-      .header {margin-bottom: 45px;}
-      .logo {font-size: 2.8rem; letter-spacing: -2px;}
+      
+      .header {
+        margin-bottom: 30px;
+        transition: all 0.4s ease;
+      }
+      
+      .logo {
+        font-size: 2.8rem; 
+        letter-spacing: -2px;
+      }
+      
       .chat-container {
-        padding: 40px 30px;
-        border-radius: 28px;
+        padding: 25px 20px;
+        border-radius: 20px;
+        background: transparent;
+        backdrop-filter: none;
+        box-shadow: none;
+        border: none;
       }
+      
+      .chat-container::before {
+        display: none;
+      }
+      
+      /* Mobile layout when response is shown */
+      .mobile-compact .header {
+        opacity: 0;
+        transform: translateY(-20px);
+        margin-bottom: 0;
+        height: 0;
+        overflow: hidden;
+      }
+      
+      .mobile-compact .container {
+        padding: 15px 15px 20px;
+      }
+      
+      .mobile-compact .input-section {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        right: 15px;
+        z-index: 100;
+        background: rgba(17, 24, 39, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        border-radius: 20px;
+        margin-bottom: 0;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+      
+      .light-mode.mobile-compact .input-section {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      
+      .mobile-compact .chat-container {
+        margin-top: 140px;
+        padding: 0;
+        background: transparent;
+      }
+      
       #responseBox {
-        padding: 30px 25px;
-        min-height: 180px;
+        background: transparent;
+        backdrop-filter: none;
+        border: none;
+        border-radius: 0;
+        padding: 25px 20px;
+        min-height: calc(100vh - 180px);
+        box-shadow: none;
+        font-size: 17px;
+        line-height: 1.8;
       }
+      
+      .light-mode #responseBox {
+        background: transparent;
+        box-shadow: none;
+        border: none;
+      }
+      
+      /* Better text spacing for mobile responses */
+      .response-content {
+        font-size: 17px;
+        line-height: 1.8;
+        letter-spacing: 0.2px;
+        word-spacing: 1px;
+      }
+      
+      .response-content p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+      }
+      
+      .response-content h1,
+      .response-content h2,
+      .response-content h3 {
+        margin: 2rem 0 1.5rem 0;
+        line-height: 1.3;
+        letter-spacing: -0.5px;
+      }
+      
+      .response-content h1 { font-size: 1.8rem; }
+      .response-content h2 { font-size: 1.5rem; }
+      .response-content h3 { font-size: 1.3rem; }
+      
+      .response-content ul,
+      .response-content ol {
+        margin: 1.5rem 0;
+        padding-left: 1.8rem;
+      }
+      
+      .response-content li {
+        margin-bottom: 0.8rem;
+        line-height: 1.7;
+      }
+      
+      .response-content code {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.95em;
+        border-radius: 8px;
+      }
+      
+      .response-content pre {
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      
+      .response-content blockquote {
+        padding-left: 1.5rem;
+        margin: 2rem 0;
+        border-left-width: 5px;
+      }
+      
       .input-wrapper {
-        gap: 16px;
+        gap: 12px;
       }
+      
       #question {
-        padding: 20px 22px;
+        padding: 18px 20px;
         min-height: 58px;
         font-size: 16px;
+        border-radius: 16px;
       }
+      
       .ask-btn {
-        padding: 20px 30px;
-        min-width: 105px;
+        padding: 18px 24px;
+        min-width: 80px;
+        border-radius: 16px;
+        font-size: 16px;
+      }
+      
+      .empty-state-text {
+        font-size: 17px;
+        line-height: 1.6;
+        padding: 0 10px;
       }
     }
 
     @media (max-width: 480px) {
       .container {
-        padding: 60px 20px 30px;
+        padding: 15px 12px 15px;
       }
+      
       .logo {
         font-size: 2.4rem;
         letter-spacing: -1px;
       }
-      .header {margin-bottom: 35px;}
-      .chat-container {
-        padding: 35px 25px;
-        border-radius: 24px;
-        margin-bottom: 20px;
+      
+      .header {
+        margin-bottom: 25px;
       }
-      .input-section {
-        margin-bottom: 35px;
+      
+      .mobile-compact .input-section {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        padding: 18px;
+        border-radius: 18px;
       }
-      .input-wrapper {
-        flex-direction: column;
-        gap: 16px;
+      
+      .mobile-compact .chat-container {
+        margin-top: 130px;
       }
-      .ask-btn {
-        width: 100%;
-        padding: 18px 24px;
-        font-size: 16px;
-        border-radius: 20px;
-      }
-      #question {
-        padding: 18px 20px;
-        border-radius: 20px;
-        font-size: 16px;
-        min-height: 58px;
-      }
+      
       #responseBox {
-        padding: 28px 22px;
-        border-radius: 20px;
-        min-height: 160px;
-        font-size: 15px;
+        padding: 20px 15px;
+        min-height: calc(100vh - 170px);
+        font-size: 16px;
       }
+      
       .response-content {
-        font-size: 15px;
+        font-size: 16px;
         line-height: 1.7;
       }
-      .empty-state-text {
+      
+      .response-content h1 { font-size: 1.6rem; }
+      .response-content h2 { font-size: 1.4rem; }
+      .response-content h3 { font-size: 1.2rem; }
+      
+      .input-wrapper {
+        gap: 10px;
+      }
+      
+      #question {
+        padding: 16px 18px;
         font-size: 16px;
+        min-height: 54px;
+        border-radius: 14px;
+      }
+      
+      .ask-btn {
+        padding: 16px 20px;
+        min-width: 75px;
+        border-radius: 14px;
       }
     }
 
     /* Extra small screens */
     @media (max-width: 360px) {
       .container {
-        padding: 50px 15px 25px;
+        padding: 12px 10px 12px;
       }
+      
       .logo {
         font-size: 2rem;
       }
-      .chat-container {
-        padding: 30px 20px;
+      
+      .mobile-compact .input-section {
+        padding: 15px;
       }
-      #question {
-        padding: 16px 18px;
-      }
+      
       #responseBox {
-        padding: 25px 18px;
+        padding: 18px 12px;
+      }
+      
+      #question {
+        padding: 14px 16px;
+        font-size: 15px;
+      }
+      
+      .ask-btn {
+        padding: 14px 18px;
+        font-size: 15px;
       }
     }
 
@@ -672,6 +832,8 @@
   </div>
   <script>
     let isDarkMode = true;
+    let isMobile = window.innerWidth <= 768;
+    let hasResponse = false;
 
     function toggleMode() {
       const body = document.body;
@@ -721,6 +883,19 @@
         .replace(/(<li>.*<\/li>)/s, '<ol>$1</ol>');
     }
 
+    function setMobileLayout() {
+      if (isMobile && hasResponse) {
+        document.body.classList.add('mobile-compact');
+      }
+    }
+
+    function resetMobileLayout() {
+      if (isMobile) {
+        document.body.classList.remove('mobile-compact');
+        hasResponse = false;
+      }
+    }
+
     async function askQuestion() {
       const questionBox = document.getElementById("question");
       const q = questionBox.value.trim();
@@ -737,6 +912,12 @@
       btnText.textContent = "Thinking...";
       responseBox.innerHTML = "";
       showLoading();
+      
+      // Set mobile layout when starting to get response
+      if (isMobile) {
+        hasResponse = true;
+        setTimeout(setMobileLayout, 100);
+      }
       
       try {
         const res = await fetch("/ask", {
@@ -755,6 +936,14 @@
           responseBox.innerHTML = `<div class="response-content"><p>${formattedResponse}</p></div>`;
           questionBox.value = "";
         }
+        
+        // Scroll to top on mobile after response
+        if (isMobile) {
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }, 200);
+        }
+        
       } catch (err) {
         hideLoading();
         responseBox.innerHTML = '<div class="response-content">Error: Could not get a response. Please try again.</div>';
@@ -762,7 +951,6 @@
       } finally {
         askBtn.disabled = false;
         btnText.textContent = "Ask";
-        // Removed questionBox.focus() to prevent keyboard from opening on mobile
       }
     }
     
@@ -771,6 +959,23 @@
     textarea.addEventListener("input", function () {
       this.style.height = "auto";
       this.style.height = Math.min(this.scrollHeight, 120) + "px";
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      isMobile = window.innerWidth <= 768;
+      if (!isMobile) {
+        resetMobileLayout();
+      } else if (hasResponse) {
+        setMobileLayout();
+      }
+    });
+
+    // Reset mobile layout when clicking in question box (for new question)
+    textarea.addEventListener('focus', function() {
+      if (isMobile && hasResponse && this.value.trim() === '') {
+        resetMobileLayout();
+      }
     });
   </script>
 </body>
